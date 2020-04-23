@@ -6,15 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GildedRoseTest {
 
-    //    Item name	Sell in - start	Quality - start	Sell in - Expected	Quality - Expected
-//        Item	0	0	-1	0
-//        Item	5	5	4	4
-//        Item	-1	10	-2	8
-//        Item	0	10	-1	9
-//
-//        Item	5	-1	Exception?
-//        Item	5	51	Exception?
-
     @Test
     void item_quality_never_below_zero_with_sell_in_above_zero() {
         Item[] items = new Item[] {new Item("item", 0, 0)};
@@ -54,12 +45,6 @@ class GildedRoseTest {
         assertEquals(-1, app.items[0].sellIn);
         assertEquals(8, app.items[0].quality);
     }
-
-    //        Item name	Sell in - start	Quality - start	Sell in - Expected	Quality - Expected
-//        Aged Brie	0	0	-1	1
-//        Aged Brie	5	50	4	50
-//        Aged Brie	-1	50	-2	50
-//        Aged Brie	5	5	4	6
 
     @Test
     void aged_brie_quality_increases_sell_in_passed() {
@@ -191,8 +176,6 @@ class GildedRoseTest {
         assertEquals(80, app.items[0].quality);
     }
 
-//    TODO Conjured items
-
     @Test
     void conjured_item_quality_and_sell_in_lowered_with_sell_in_above_zero() {
         Item[] items = new Item[] {new Item("Conjured item", 5, 5)};
@@ -233,23 +216,3 @@ class GildedRoseTest {
         assertEquals(1, app.items[0].quality);
     }
 }
-
-
-//
-//
-//        Item name	Sell in - start	Quality - start	Sell in - Expected	Quality - Expected
-//        Sulfuras, Hand of Ragnaros	null	80	null	80
-//        Sulfuras, Hand of Ragnaros	-1	75	null	80
-//        Sulfuras, Hand of Ragnaros			null	80
-//        Sulfuras, Hand of Ragnaros			null	80
-//
-//
-//        Item name	Sell in - start	Quality - start	Sell in - Expected	Quality - Expected
-//        Backstage passes	50	20	49	21
-//        Backstage passes	10	20	9	22
-//        Backstage passes	10	49	9	50
-//        Backstage passes	5	20	4	23
-//        Backstage passes	5	49	4	50
-//        Backstage passes	1	50	0	50
-//        Backstage passes	0	50	-1	0
-
