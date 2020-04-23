@@ -24,6 +24,10 @@ class GildedRose {
         }
     }
 
+    /*
+    Private Methods
+    */
+
     private void adjustItemQualityAfterSellInHasPassed(Item item) {
         if (item.sellIn < 0) {
             switch (item.name) {
@@ -31,11 +35,11 @@ class GildedRose {
                     increaseItemQualityByOne(item);
                     break;
                 case BACKSTAGE_PASSES:
-                    item.quality = 0;
+                    item.quality = 0; // Quality drops to 0 after sell by date has passed
                     break;
                 default:
                     if (item.quality > 0 && !item.name.equals(SULFURAS)) {
-                        decreaseItemQualityByAmount(item, 2);
+                        decreaseItemQualityByAmount(item, 2); // Once the sell by date has passed, Quality degrades twice as fast
                     }
             }
         }
@@ -47,11 +51,11 @@ class GildedRose {
         } else {
             increaseItemQualityByOne(item);
             if (item.name.equals(BACKSTAGE_PASSES)) {
-                if (item.sellIn < 11) {
+                if (item.sellIn < 11) { // Quality increases by 2 when there are 10 days or less
                     increaseItemQualityByOne(item);
                 }
 
-                if (item.sellIn < 6) {
+                if (item.sellIn < 6) { // Quality increases by 3 when there are 5 days or less
                     increaseItemQualityByOne(item);
                 }
             }
@@ -65,14 +69,14 @@ class GildedRose {
     }
 
     private void increaseItemQualityByOne(Item item) {
-        if (item.quality < 50) {
+        if (item.quality < 50) { // The Quality of an item is never more than 50
             item.quality = item.quality + 1;
         }
     }
 
     private void decreaseItemQualityByAmount(Item item, int amountToDecreaseBy) {
         if (item.name.toLowerCase(Locale.ENGLISH).contains("conjured")) {
-            amountToDecreaseBy = amountToDecreaseBy * 2;
+            amountToDecreaseBy = amountToDecreaseBy * 2; // "Conjured" items degrade in Quality twice as fast as normal items
         }
 
         if (item.quality > 0 && !item.name.equals(SULFURAS)) {
