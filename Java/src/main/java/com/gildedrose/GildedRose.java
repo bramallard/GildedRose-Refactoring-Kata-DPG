@@ -1,5 +1,7 @@
 package com.gildedrose;
 
+import java.util.Locale;
+
 class GildedRose {
     public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
     public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
@@ -12,45 +14,45 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            adjustItemQualityByItemName(item);
             decreaseSellInByOne(item);
-            adjustItemQualityBelowSellIn(item);
-        }
-    }
 
-    private void adjustItemQualityBelowSellIn(Item item) {
-        if (item.sellIn < 0) {
-            if (!item.name.equals(AGED_BRIE)) {
-                if (!item.name.equals(BACKSTAGE_PASSES)) {
-                    if (item.quality > 0 && !item.name.equals(SULFURAS)) {
-                        decreaseItemQualityByAmount(item, 1);
-                    }
-                } else {
-                    item.quality = 0;
-                }
+            if (item.sellIn < 0) {
+                adjustItemQualityAfterSellInHasPassed(item);
             } else {
-                if (item.quality < 50) {
-                    increaseItemQualityByAmount(item, 1);
-                }
+                adjustItemQualityBeforeSellInHasPassed(item);
             }
         }
     }
 
-    private void adjustItemQualityByItemName(Item item) {
+    private void adjustItemQualityAfterSellInHasPassed(Item item) {
+        if (item.sellIn < 0) {
+            switch (item.name) {
+                case AGED_BRIE:
+                    increaseItemQualityByOne(item);
+                    break;
+                case BACKSTAGE_PASSES:
+                    item.quality = 0;
+                    break;
+                default:
+                    if (item.quality > 0 && !item.name.equals(SULFURAS)) {
+                        decreaseItemQualityByAmount(item, 2);
+                    }
+            }
+        }
+    }
+
+    private void adjustItemQualityBeforeSellInHasPassed(Item item) {
         if (!item.name.equals(AGED_BRIE) && !item.name.equals(BACKSTAGE_PASSES)) {
             decreaseItemQualityByAmount(item, 1);
         } else {
-            if (item.quality < 50) {
-                increaseItemQualityByAmount(item, 1);
+            increaseItemQualityByOne(item);
+            if (item.name.equals(BACKSTAGE_PASSES)) {
+                if (item.sellIn < 11) {
+                    increaseItemQualityByOne(item);
+                }
 
-                if (item.name.equals(BACKSTAGE_PASSES)) {
-                    if (item.sellIn < 11 && item.quality < 50) {
-                        increaseItemQualityByAmount(item, 1);
-                    }
-
-                    if (item.sellIn < 6 && item.quality < 50) {
-                        increaseItemQualityByAmount(item, 1);
-                    }
+                if (item.sellIn < 6) {
+                    increaseItemQualityByOne(item);
                 }
             }
         }
@@ -62,11 +64,17 @@ class GildedRose {
         }
     }
 
-    private void increaseItemQualityByAmount(Item item, int amountToIncreaseBy) {
-        item.quality = item.quality + amountToIncreaseBy;
+    private void increaseItemQualityByOne(Item item) {
+        if (item.quality < 50) {
+            item.quality = item.quality + 1;
+        }
     }
 
     private void decreaseItemQualityByAmount(Item item, int amountToDecreaseBy) {
+        if (item.name.toLowerCase(Locale.ENGLISH).contains("conjured")) {
+            amountToDecreaseBy = amountToDecreaseBy * 2;
+        }
+
         if (item.quality > 0 && !item.name.equals(SULFURAS)) {
             item.quality = item.quality - amountToDecreaseBy;
         }

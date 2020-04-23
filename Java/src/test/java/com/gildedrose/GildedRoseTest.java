@@ -16,7 +16,7 @@ class GildedRoseTest {
 //        Item	5	51	Exception?
 
     @Test
-    void item_quality_never_below_zero_sell_in_above_zero() {
+    void item_quality_never_below_zero_with_sell_in_above_zero() {
         Item[] items = new Item[] {new Item("item", 0, 0)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -54,29 +54,6 @@ class GildedRoseTest {
         assertEquals(-1, app.items[0].sellIn);
         assertEquals(8, app.items[0].quality);
     }
-
-    //    @Test
-    void test() {
-        Item[] items = new Item[] {new Item("item", 5, -1)};
-        GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals("item", app.items[0].name);
-        assertEquals(4, app.items[0].sellIn);
-        assertEquals(8, app.items[0].quality);
-    }
-
-    //    @Test
-    void test2() {
-        Item[] items = new Item[] {new Item("item", 5, 51)};
-        GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals("item", app.items[0].name);
-        assertEquals(4, app.items[0].sellIn);
-        assertEquals(8, app.items[0].quality);
-    }
-//    TODO  Item	5	-1	Exception?
-//    TODO  Item	5	51	Exception?
-
 
     //        Item name	Sell in - start	Quality - start	Sell in - Expected	Quality - Expected
 //        Aged Brie	0	0	-1	1
@@ -214,19 +191,47 @@ class GildedRoseTest {
         assertEquals(80, app.items[0].quality);
     }
 
+//    TODO Conjured items
+
     @Test
-    void sulfuras_quality_and_sell_in_never_change2() {
-        Item[] items = new Item[] {new Item("Sulfuras, Hand of Ragnaros", 50, 75)};
+    void conjured_item_quality_and_sell_in_lowered_with_sell_in_above_zero() {
+        Item[] items = new Item[] {new Item("Conjured item", 5, 5)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
-        assertEquals("Sulfuras, Hand of Ragnaros", app.items[0].name);
-        assertEquals(50, app.items[0].sellIn);
-        assertEquals(80, app.items[0].quality);
+        assertEquals("Conjured item", app.items[0].name);
+        assertEquals(4, app.items[0].sellIn);
+        assertEquals(3, app.items[0].quality);
     }
 
-//    TODO exception, sulfuras always 80?
+    @Test
+    void conjured_item_quality_and_sell_in_lowered_with_sell_in_below_zero() {
+        Item[] items = new Item[] {new Item("Conjured item", -2, 5)};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals("Conjured item", app.items[0].name);
+        assertEquals(-3, app.items[0].sellIn);
+        assertEquals(1, app.items[0].quality);
+    }
 
-//    TODO Conjured items
+    @Test
+    void conjured_item_quality_and_sell_in_lowered_with_sell_in_above_zero_different_item() {
+        Item[] items = new Item[] {new Item("Conjured Old Sock", 5, 5)};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals("Conjured Old Sock", app.items[0].name);
+        assertEquals(4, app.items[0].sellIn);
+        assertEquals(3, app.items[0].quality);
+    }
+
+    @Test
+    void conjured_item_quality_and_sell_in_lowered_with_sell_in_below_zero_different_item() {
+        Item[] items = new Item[] {new Item("Conjured Old Sock", -2, 5)};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals("Conjured Old Sock", app.items[0].name);
+        assertEquals(-3, app.items[0].sellIn);
+        assertEquals(1, app.items[0].quality);
+    }
 }
 
 
